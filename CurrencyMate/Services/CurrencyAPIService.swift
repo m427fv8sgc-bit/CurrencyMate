@@ -21,8 +21,7 @@ struct CurrencyAPIService {
                 baseCode: baseCode,
                 quoteCode: quoteCode,
                 rate: 1,
-                date: "Today",
-                isCached: false
+                date: "Today"
             )
         }
 
@@ -42,8 +41,7 @@ struct CurrencyAPIService {
             baseCode: apiResponse.base,
             quoteCode: apiResponse.quote,
             rate: apiResponse.rate,
-            date: apiResponse.date,
-            isCached: false
+            date: apiResponse.date
         )
     }
 }

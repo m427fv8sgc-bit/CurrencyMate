@@ -10,41 +10,25 @@ final class HomeViewModel: ObservableObject {
     @Published private(set) var rateText = ""
     @Published private(set) var isLoading = false
     @Published var errorMessage: String?
-//    @Published private(set) var favorites: [CurrencyPair] = []
-//    @Published private(set) var recentConversions: [ConversionRecord] = []
-    @Published var settings: AppSettings
+    @Published var settings = AppSettings.default
 
     let title = "CurrencyMate"
-    let subtitle = "Convert currencies with live rates and offline cache."
+    let subtitle = "Convert currencies with live rates."
     let currencies = Currency.supported
 
     private let apiService: CurrencyAPIService
-    private let storage: CurrencyStorage
     private let numberFormatter: NumberFormatter
 
     init(
-        apiService: CurrencyAPIService = CurrencyAPIService(),
-        storage: CurrencyStorage = CurrencyStorage()
+        apiService: CurrencyAPIService = CurrencyAPIService()
     ) {
         self.apiService = apiService
-        self.storage = storage
-        self.settings = storage.loadSettings()
-//        self.favorites = storage.loadFavorites()
-//        self.recentConversions = storage.loadRecentConversions()
 
         self.numberFormatter = NumberFormatter()
         self.numberFormatter.numberStyle = .decimal
         self.numberFormatter.maximumFractionDigits = 2
         self.numberFormatter.minimumFractionDigits = 0
     }
-
-    var selectedPair: CurrencyPair {
-        CurrencyPair(fromCode: fromCurrency, toCode: toCurrency)
-    }
-
-//    var isSelectedPairFavorite: Bool {
-//        favorites.contains(selectedPair)
-//    }
 
     func convert() async {
         guard let amount = Double(amountText.replacingOccurrences(of: ",", with: ".")), amount > 0 else {
@@ -57,21 +41,9 @@ final class HomeViewModel: ObservableObject {
 
         do {
             let rate = try await apiService.fetchRate(from: fromCurrency, to: toCurrency)
-            storage.saveRate(rate)
             showConversion(amount: amount, rate: rate)
         } catch {
-            if let cachedRate = storage.loadRate(for: selectedPair) {
-                let rate = ExchangeRate(
-                    baseCode: cachedRate.baseCode,
-                    quoteCode: cachedRate.quoteCode,
-                    rate: cachedRate.rate,
-                    date: cachedRate.date,
-                    isCached: true
-                )
-                showConversion(amount: amount, rate: rate)
-            } else {
-                errorMessage = error.localizedDescription
-            }
+            errorMessage = error.localizedDescription
         }
 
         isLoading = false
@@ -85,32 +57,9 @@ final class HomeViewModel: ObservableObject {
         rateText = ""
     }
 
-//    func toggleFavorite() {
-//        if favorites.contains(selectedPair) {
-//            favorites.removeAll { $0 == selectedPair }
-//        } else {
-//            favorites.insert(selectedPair, at: 0)
-//        }
-//
-//        storage.saveFavorites(favorites)
-//    }
-//
-//    func useFavorite(_ pair: CurrencyPair) {
-//        fromCurrency = pair.fromCode
-//        toCurrency = pair.toCode
-//        convertedAmountText = "Tap Convert to refresh."
-//        rateText = ""
-//    }
-
     func updateTheme(_ theme: AppTheme) {
         settings.theme = theme
-        storage.saveSettings(settings)
     }
-
-//    func clearHistory() {
-//        recentConversions = []
-//        storage.saveRecentConversions([])
-//    }
 
     func formattedCurrencyName(for code: String) -> String {
         guard let currency = currencies.first(where: { $0.code == code }) else {
@@ -124,25 +73,8 @@ final class HomeViewModel: ObservableObject {
         let convertedAmount = amount * rate.rate
         convertedAmountText = "\(format(amount)) \(rate.baseCode) = \(format(convertedAmount)) \(rate.quoteCode)"
 
-        let cacheLabel = rate.isCached ? "Cached" : "Live"
-        rateText = "\(cacheLabel) rate: 1 \(rate.baseCode) = \(formatRate(rate.rate)) \(rate.quoteCode) • \(rate.date)"
-//        saveRecentConversion(amount: amount, convertedAmount: convertedAmount, rate: rate)
+        rateText = "Live rate: 1 \(rate.baseCode) = \(formatRate(rate.rate)) \(rate.quoteCode) • \(rate.date)"
     }
-
-//    private func saveRecentConversion(amount: Double, convertedAmount: Double, rate: ExchangeRate) {
-//        let record = ConversionRecord(
-//            amount: amount,
-//            fromCode: rate.baseCode,
-//            toCode: rate.quoteCode,
-//            result: convertedAmount,
-//            rate: rate.rate,
-//            usedCachedRate: rate.isCached
-//        )
-//
-//        recentConversions.insert(record, at: 0)
-//        recentConversions = Array(recentConversions.prefix(8))
-//        storage.saveRecentConversions(recentConversions)
-//    }
 
     private func format(_ value: Double) -> String {
         numberFormatter.string(from: NSNumber(value: value)) ?? String(format: "%.2f", value)

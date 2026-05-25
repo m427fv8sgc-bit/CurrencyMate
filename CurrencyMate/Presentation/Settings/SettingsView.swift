@@ -13,25 +13,9 @@ struct SettingsView: View {
                 }
             }
 
-            Section("Data") {
-//                HStack {
-//                    Label("Favorites", systemImage: "star")
-//                    Spacer()
-//                    Text("\(viewModel.favorites.count)")
-//                        .foregroundStyle(.secondary)
-//                }
-
-//                Button(role: .destructive) {
-//                    viewModel.clearHistory()
-//                } label: {
-//                    Label("Clear recent conversions", systemImage: "trash")
-//                }
-//                .disabled(viewModel.recentConversions.isEmpty)
-            }
-
             Section("Rates") {
                 Label("Powered by Frankfurter", systemImage: "antenna.radiowaves.left.and.right")
-                Text("CurrencyMate saves the last successful rate for each pair, so conversion can still work offline.")
+                Text("CurrencyMate uses live exchange rates from the API.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
