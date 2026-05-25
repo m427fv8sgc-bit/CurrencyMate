@@ -13,8 +13,8 @@ struct HomeView: View {
                 header
                 converterCard
                 resultCard
-                favoritesCard
-                recentConversionsCard
+               // favoritesCard
+              //  recentConversionsCard
             }
             .padding()
         }
@@ -41,8 +41,8 @@ struct HomeView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(viewModel.title)
-                .font(.largeTitle.bold())
+//            Text(viewModel.title)
+//                .font(.largeTitle.bold())
 
             Text(viewModel.subtitle)
                 .font(.body)
@@ -127,54 +127,54 @@ struct HomeView: View {
         .cardStyle()
     }
 
-    @ViewBuilder
-    private var favoritesCard: some View {
-        if !viewModel.favorites.isEmpty {
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Favorites")
-                    .font(.headline)
-
-                ForEach(viewModel.favorites) { pair in
-                    Button {
-                        viewModel.useFavorite(pair)
-                    } label: {
-                        HStack {
-                            Image(systemName: "star.fill")
-                                .foregroundStyle(.yellow)
-                            Text("\(pair.fromCode) -> \(pair.toCode)")
-                            Spacer()
-                        }
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .cardStyle()
-        }
-    }
-
-    @ViewBuilder
-    private var recentConversionsCard: some View {
-        if !viewModel.recentConversions.isEmpty {
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Recent")
-                    .font(.headline)
-
-                ForEach(viewModel.recentConversions) { record in
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("\(formatted(record.amount)) \(record.fromCode) -> \(formatted(record.result)) \(record.toCode)")
-                            .font(.subheadline.weight(.semibold))
-
-                        Text(record.usedCachedRate ? "Offline cached rate" : "Live rate")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 4)
-                }
-            }
-            .cardStyle()
-        }
-    }
+//    @ViewBuilder
+//    private var favoritesCard: some View {
+//        if !viewModel.favorites.isEmpty {
+//            VStack(alignment: .leading, spacing: 12) {
+//                Text("Favorites")
+//                    .font(.headline)
+//
+//                ForEach(viewModel.favorites) { pair in
+//                    Button {
+//                        viewModel.useFavorite(pair)
+//                    } label: {
+//                        HStack {
+//                            Image(systemName: "star.fill")
+//                                .foregroundStyle(.yellow)
+//                            Text("\(pair.fromCode) -> \(pair.toCode)")
+//                            Spacer()
+//                        }
+//                    }
+//                    .buttonStyle(.plain)
+//                }
+//            }
+//            .cardStyle()
+//        }
+//    }
+//
+//    @ViewBuilder
+//    private var recentConversionsCard: some View {
+//        if !viewModel.recentConversions.isEmpty {
+//            VStack(alignment: .leading, spacing: 12) {
+//                Text("Recent")
+//                    .font(.headline)
+//
+//                ForEach(viewModel.recentConversions) { record in
+//                    VStack(alignment: .leading, spacing: 4) {
+//                        Text("\(formatted(record.amount)) \(record.fromCode) -> \(formatted(record.result)) \(record.toCode)")
+//                            .font(.subheadline.weight(.semibold))
+//
+//                        Text(record.usedCachedRate ? "Offline cached rate" : "Live rate")
+//                            .font(.caption)
+//                            .foregroundStyle(.secondary)
+//                    }
+//                    .frame(maxWidth: .infinity, alignment: .leading)
+//                    .padding(.vertical, 4)
+//                }
+//            }
+//            .cardStyle()
+//        }
+//    }
 
     private func currencyPicker(title: String, selection: Binding<String>) -> some View {
         VStack(alignment: .leading, spacing: 6) {
