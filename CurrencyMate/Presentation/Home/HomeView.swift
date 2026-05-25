@@ -96,13 +96,13 @@ struct HomeView: View {
                 .buttonStyle(.borderedProminent)
                 .disabled(viewModel.isLoading)
 
-                Button {
-                    viewModel.toggleFavorite()
-                } label: {
-                    Image(systemName: viewModel.isSelectedPairFavorite ? "star.fill" : "star")
-                }
-                .buttonStyle(.bordered)
-                .accessibilityLabel(viewModel.isSelectedPairFavorite ? "Remove favorite" : "Add favorite")
+//                Button {
+//                    viewModel.toggleFavorite()
+//                } label: {
+//                    Image(systemName: viewModel.isSelectedPairFavorite ? "star.fill" : "star")
+//                }
+//                .buttonStyle(.bordered)
+//                .accessibilityLabel(viewModel.isSelectedPairFavorite ? "Remove favorite" : "Add favorite")
             }
         }
         .cardStyle()

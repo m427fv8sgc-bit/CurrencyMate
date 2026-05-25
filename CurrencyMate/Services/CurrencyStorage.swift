@@ -13,21 +13,21 @@ final class CurrencyStorage {
         load(ExchangeRate.self, key: "rate_\(pair.fromCode)_\(pair.toCode)")
     }
 
-    func saveFavorites(_ favorites: [CurrencyPair]) {
-        save(favorites, key: "favorites")
-    }
+//    func saveFavorites(_ favorites: [CurrencyPair]) {
+//        save(favorites, key: "favorites")
+//    }
+//
+//    func loadFavorites() -> [CurrencyPair] {
+//        load([CurrencyPair].self, key: "favorites") ?? []
+//    }
 
-    func loadFavorites() -> [CurrencyPair] {
-        load([CurrencyPair].self, key: "favorites") ?? []
-    }
-
-    func saveRecentConversions(_ records: [ConversionRecord]) {
-        save(records, key: "recent_conversions")
-    }
-
-    func loadRecentConversions() -> [ConversionRecord] {
-        load([ConversionRecord].self, key: "recent_conversions") ?? []
-    }
+//    func saveRecentConversions(_ records: [ConversionRecord]) {
+//        save(records, key: "recent_conversions")
+//    }
+//
+//    func loadRecentConversions() -> [ConversionRecord] {
+//        load([ConversionRecord].self, key: "recent_conversions") ?? []
+//    }
 
     func saveSettings(_ settings: AppSettings) {
         save(settings, key: "settings")
