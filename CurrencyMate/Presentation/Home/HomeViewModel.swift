@@ -16,11 +16,11 @@ final class HomeViewModel: ObservableObject {
     let subtitle = "Convert currencies with live rates."
     let currencies = Currency.supported
 
-    private let apiService: CurrencyAPIService
+    private let apiService: CurrencyRateFetching
     private let numberFormatter: NumberFormatter
 
     init(
-        apiService: CurrencyAPIService = CurrencyAPIService()
+        apiService: CurrencyRateFetching = CurrencyAPIService()
     ) {
         self.apiService = apiService
 

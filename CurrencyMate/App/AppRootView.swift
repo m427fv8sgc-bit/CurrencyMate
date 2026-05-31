@@ -7,18 +7,7 @@ struct AppRootView: View {
         NavigationStack {
             HomeView(viewModel: viewModel)
         }
-        .preferredColorScheme(colorScheme)
-    }
-
-    private var colorScheme: ColorScheme? {
-        switch viewModel.settings.theme {
-        case .system:
-            return nil
-        case .light:
-            return .light
-        case .dark:
-            return .dark
-        }
+       // .preferredColorScheme(colorScheme)
     }
 }
 

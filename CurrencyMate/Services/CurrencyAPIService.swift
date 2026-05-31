@@ -1,5 +1,19 @@
 import Foundation
 
+protocol CurrencyRateFetching {
+    func fetchRate(from baseCode: String, to quoteCode: String) async throws -> ExchangeRate
+}
+
+protocol URLSessionDataProviding {
+    func data(from url: URL) async throws -> (Data, URLResponse)
+}
+
+extension URLSession: URLSessionDataProviding {
+    func data(from url: URL) async throws -> (Data, URLResponse) {
+        try await data(from: url, delegate: nil)
+    }
+}
+
 enum CurrencyAPIError: LocalizedError {
     case invalidURL
     case invalidResponse
@@ -14,7 +28,13 @@ enum CurrencyAPIError: LocalizedError {
     }
 }
 
-struct CurrencyAPIService {
+struct CurrencyAPIService: CurrencyRateFetching {
+    private let urlSession: URLSessionDataProviding
+
+    init(urlSession: URLSessionDataProviding = URLSession.shared) {
+        self.urlSession = urlSession
+    }
+
     func fetchRate(from baseCode: String, to quoteCode: String) async throws -> ExchangeRate {
         if baseCode == quoteCode {
             return ExchangeRate(
@@ -29,7 +49,7 @@ struct CurrencyAPIService {
             throw CurrencyAPIError.invalidURL
         }
 
-        let (data, response) = try await URLSession.shared.data(from: url)
+        let (data, response) = try await urlSession.data(from: url)
 
         guard let httpResponse = response as? HTTPURLResponse,
               (200...299).contains(httpResponse.statusCode) else {
