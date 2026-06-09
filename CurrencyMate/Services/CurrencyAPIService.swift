@@ -1,4 +1,7 @@
 import Foundation
+// Review: make option to have multiple API option to select for the service.
+// Interceptor :
+// Custom buttonStyles.
 
 protocol CurrencyRateFetching {
     func fetchRate(from baseCode: String, to quoteCode: String) async throws -> ExchangeRate
@@ -29,9 +32,16 @@ enum CurrencyAPIError: LocalizedError {
 }
 
 struct CurrencyAPIService: CurrencyRateFetching {
+    private static let defaultBaseURL = URL(string: "https://api.frankfurter.dev/v2")!
+
+    private let baseURL: URL
     private let urlSession: URLSessionDataProviding
 
-    init(urlSession: URLSessionDataProviding = URLSession.shared) {
+    init(
+        baseURL: URL = CurrencyAPIService.defaultBaseURL,
+        urlSession: URLSessionDataProviding = URLSession.shared
+    ) {
+        self.baseURL = baseURL
         self.urlSession = urlSession
     }
 
@@ -45,9 +55,7 @@ struct CurrencyAPIService: CurrencyRateFetching {
             )
         }
 
-        guard let url = URL(string: "https://api.frankfurter.dev/v2/rate/\(baseCode)/\(quoteCode)") else {
-            throw CurrencyAPIError.invalidURL
-        }
+        let url = try rateURL(from: baseCode, to: quoteCode)
 
         let (data, response) = try await urlSession.data(from: url)
 
@@ -63,6 +71,25 @@ struct CurrencyAPIService: CurrencyRateFetching {
             rate: apiResponse.rate,
             date: apiResponse.date
         )
+    }
+
+    private func rateURL(from baseCode: String, to quoteCode: String) throws -> URL {
+        guard var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false) else {
+            throw CurrencyAPIError.invalidURL
+        }
+
+        let existingPath = components.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        let path = [existingPath, "rate", baseCode, quoteCode]
+            .filter { !$0.isEmpty }
+            .joined(separator: "/")
+
+        components.path = "/" + path
+
+        guard let url = components.url else {
+            throw CurrencyAPIError.invalidURL
+        }
+
+        return url
     }
 }
 
