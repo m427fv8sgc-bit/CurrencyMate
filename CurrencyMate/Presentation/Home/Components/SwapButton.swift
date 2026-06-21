@@ -9,15 +9,12 @@ struct SwapButton: View {
 
             Button(action: action) {
                 Image(systemName: "arrow.up.arrow.down")
-                    .font(.headline)
-                    .frame(width: 36, height: 36)
             }
-            .buttonStyle(.bordered)
-            .clipShape(Circle())
+            .buttonStyle(.currencyIcon)
             .accessibilityLabel("Swap currencies")
 
             Divider()
         }
-        .frame(height: 36)
+        .frame(height: 44)
     }
 }

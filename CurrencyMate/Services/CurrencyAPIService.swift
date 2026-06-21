@@ -99,3 +99,5 @@ private struct ExchangeRateResponse: Decodable {
     let quote: String
     let rate: Double
 }
+
+// I need to rename the response before send to UI
