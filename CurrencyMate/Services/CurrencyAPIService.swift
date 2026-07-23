@@ -36,13 +36,16 @@ struct CurrencyAPIService: CurrencyRateFetching {
 
     private let baseURL: URL
     private let urlSession: URLSessionDataProviding
+    private let decoder: JSONDecoder
 
     init(
         baseURL: URL = CurrencyAPIService.defaultBaseURL,
-        urlSession: URLSessionDataProviding = URLSession.shared
+        urlSession: URLSessionDataProviding = URLSession.shared,
+        decoder: JSONDecoder = CurrencyAPIService.makeDecoder()
     ) {
         self.baseURL = baseURL
         self.urlSession = urlSession
+        self.decoder = decoder
     }
 
     func fetchRate(from baseCode: String, to quoteCode: String) async throws -> ExchangeRate {
@@ -51,7 +54,7 @@ struct CurrencyAPIService: CurrencyRateFetching {
                 baseCode: baseCode,
                 quoteCode: quoteCode,
                 rate: 1,
-                date: "Today"
+                date: Date()
             )
         }
 
@@ -64,13 +67,7 @@ struct CurrencyAPIService: CurrencyRateFetching {
             throw CurrencyAPIError.invalidResponse
         }
 
-        let apiResponse = try JSONDecoder().decode(ExchangeRateResponse.self, from: data)
-        return ExchangeRate(
-            baseCode: apiResponse.base,
-            quoteCode: apiResponse.quote,
-            rate: apiResponse.rate,
-            date: apiResponse.date
-        )
+        return try decoder.decode(ExchangeRate.self, from: data)
     }
 
     private func rateURL(from baseCode: String, to quoteCode: String) throws -> URL {
@@ -91,13 +88,19 @@ struct CurrencyAPIService: CurrencyRateFetching {
 
         return url
     }
-}
 
-private struct ExchangeRateResponse: Decodable {
-    let date: String
-    let base: String
-    let quote: String
-    let rate: Double
-}
+    private static func makeDecoder() -> JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(makeAPIDateFormatter())
+        return decoder
+    }
 
-// I need to rename the response before send to UI
+    private static func makeAPIDateFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }
+}

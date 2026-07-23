@@ -1,0 +1,38 @@
+{
+  "configurations" : [
+    {
+      "id" : "97C68206-70DC-46DB-94C9-F212478162F6",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:CurrencyMate.xcodeproj",
+      "identifier" : "87923CBB2FC2E55400D39331",
+      "name" : "CurrencyMate"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:CurrencyMate.xcodeproj",
+        "identifier" : "87923CC82FC2E55600D39331",
+        "name" : "CurrencyMateTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:CurrencyMate.xcodeproj",
+        "identifier" : "87923CD22FC2E55600D39331",
+        "name" : "CurrencyMateUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

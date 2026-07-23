@@ -17,17 +17,26 @@ final class HomeViewModel: ObservableObject {
     let currencies = Currency.supported
 
     private let apiService: CurrencyRateFetching
+    private let settingsStore: AppSettingsStoring
     private let numberFormatter: NumberFormatter
+    private let dateFormatter: DateFormatter
 
     init(
-        apiService: CurrencyRateFetching = CurrencyAPIService()
+        apiService: CurrencyRateFetching = CurrencyAPIService(),
+        settingsStore: AppSettingsStoring = AppSettingsStore()
     ) {
         self.apiService = apiService
+        self.settingsStore = settingsStore
+        self.settings = settingsStore.loadSettings()
 
         self.numberFormatter = NumberFormatter()
         self.numberFormatter.numberStyle = .decimal
         self.numberFormatter.maximumFractionDigits = 2
         self.numberFormatter.minimumFractionDigits = 0
+
+        self.dateFormatter = DateFormatter()
+        self.dateFormatter.dateStyle = .medium
+        self.dateFormatter.timeStyle = .none
     }
 
     func convert() async {
@@ -59,6 +68,7 @@ final class HomeViewModel: ObservableObject {
 
     func updateTheme(_ theme: AppTheme) {
         settings.theme = theme
+        settingsStore.saveSettings(settings)
     }
 
     func formattedCurrencyName(for code: String) -> String {
@@ -73,7 +83,7 @@ final class HomeViewModel: ObservableObject {
         let convertedAmount = amount * rate.rate
         convertedAmountText = "\(format(amount)) \(rate.baseCode) = \(format(convertedAmount)) \(rate.quoteCode)"
 
-        rateText = "Live rate: 1 \(rate.baseCode) = \(formatRate(rate.rate)) \(rate.quoteCode) • \(rate.date)"
+        rateText = "Live rate: 1 \(rate.baseCode) = \(formatRate(rate.rate)) \(rate.quoteCode) • \(formatDate(rate.date))"
     }
 
     private func format(_ value: Double) -> String {
@@ -86,5 +96,13 @@ final class HomeViewModel: ObservableObject {
         }
 
         return format(value)
+    }
+
+    private func formatDate(_ date: Date) -> String {
+        if Calendar.current.isDateInToday(date) {
+            return "Today"
+        }
+
+        return dateFormatter.string(from: date)
     }
 }

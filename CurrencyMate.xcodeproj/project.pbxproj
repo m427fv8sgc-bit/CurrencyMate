@@ -27,6 +27,7 @@
 		87923CBC2FC2E55400D39331 /* CurrencyMate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CurrencyMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87923CC92FC2E55600D39331 /* CurrencyMateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CurrencyMateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		87923CD32FC2E55600D39331 /* CurrencyMateUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CurrencyMateUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		87B768262FEA507F0005446C /* CurrencyMate.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CurrencyMate.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +76,7 @@
 		87923CB32FC2E55400D39331 = {
 			isa = PBXGroup;
 			children = (
+				87B768262FEA507F0005446C /* CurrencyMate.xctestplan */,
 				87923CBE2FC2E55400D39331 /* CurrencyMate */,
 				87923CCC2FC2E55600D39331 /* CurrencyMateTests */,
 				87923CD62FC2E55600D39331 /* CurrencyMateUITests */,
@@ -321,7 +323,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -378,7 +380,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
